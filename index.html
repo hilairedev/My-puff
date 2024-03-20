@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paiement My Puff</title>
+</head>
+<body>
+  <h1>Paiement My Puff</h1>
+
+  <form action="mips_integration.php" method="post" id="gotopay">
+    <input type="number" placeholder="Montant" id="montant" name="montant">
+    <input type="hidden" id="reference" name="reference">
+    <button id="submit_pay">Confirmer</button>
+  </form>
+
+  <script>
+    const generateReference = () => {
+      let reference = "";
+      for (let i = 0; i < 8; i++) {
+        reference += Math.floor(Math.random() * 10);
+      }
+      return reference;
+    };
+
+    document.getElementById("submit_pay").addEventListener("click", (e) => {
+      e.preventDefault();
+      const montant = document.getElementById("montant").value;
+      const reference = generateReference();
+
+	  window.location = "mips_integration.php?m="+montant+"&r="+reference+"&p";
+    });
+  </script>
+</body>
+</html>
