@@ -27,17 +27,14 @@ if (isset($_GET['p']) AND isset($_GET['m'])) {
         $remote_user_password = ''; 
 
 
-        $id_merchant = 'rfevVOeldVrg2xG3sS1tETF6swX5OIe1';
-        $id_entity = '5Gfu3zPzcjT0LolPofcrvhQCXE7fLS5i';
-        $operator_id = 'MXmJPZ7mhe3SvW1tN4nPToUJ7HX8Qmv1';
-        $remote_user_password = 'mzQ62v0x45oOo0H0GNNtbIbKNWuEcRWV';
+       
 
 
         /*Info given by MIPS - Do not Change*/
         //merchant credentials 
 
-        $auth_username = "my_puff_U3e2c9";  //value set for merchant
-        $auth_password = 'yY4F_ThX:6kq';  //value set for merchant
+        $auth_username = "";  //value set for merchant
+        $auth_password = '';  //value set for merchant
 
 
         /*Info given by MIPS - Do not Change*/
