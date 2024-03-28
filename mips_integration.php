@@ -10,6 +10,10 @@
 
 <?php
 // exit();
+    // include_once 'fonctions.php';
+
+
+    // Ici je recupere le montant
 
     $montantTotal = floatval($_GET['m']) * 100;
     
@@ -27,7 +31,7 @@ if (isset($_GET['p']) AND isset($_GET['m'])) {
         $remote_user_password = ''; 
 
 
-       
+        
 
 
         /*Info given by MIPS - Do not Change*/
@@ -41,9 +45,13 @@ if (isset($_GET['p']) AND isset($_GET['m'])) {
 
         //$order_id = '';                       // set order_id from cart
         // $order_id = 'order_'.rand(0,9999);
-        $order_id = $_GET['r'];
 
-        $currency='XOF';						//currency
+
+        // Ici je recupere la reference
+
+        $order_id = nettoyage($_GET['r']);
+
+        $currency='XOF';                        //currency
 
         //load iframe html
         $complete_array_message = [
@@ -72,17 +80,17 @@ if (isset($_GET['p']) AND isset($_GET['m'])) {
 
         $curl = curl_init();
         $curl_opt = [
-            CURLOPT_URL 			=> $api_url,
-            CURLOPT_USERAGENT 		=> 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36',
-            CURLOPT_RETURNTRANSFER 	=> 1,
-            CURLOPT_FOLLOWLOCATION 	=> false,
-            CURLOPT_FORBID_REUSE 	=> true,
-            CURLOPT_FRESH_CONNECT 	=> true,
+            CURLOPT_URL             => $api_url,
+            CURLOPT_USERAGENT       => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36',
+            CURLOPT_RETURNTRANSFER  => 1,
+            CURLOPT_FOLLOWLOCATION  => false,
+            CURLOPT_FORBID_REUSE    => true,
+            CURLOPT_FRESH_CONNECT   => true,
             CURLOPT_VERBOSE         => 1,
-            CURLOPT_SSL_VERIFYPEER 	=> false,
-            CURLOPT_POST 			=> true,
-            CURLOPT_POSTFIELDS 		=> 'posted_data='.$complete_array_message,
-            CURLOPT_HTTPHEADER 		=> [
+            CURLOPT_SSL_VERIFYPEER  => false,
+            CURLOPT_POST            => true,
+            CURLOPT_POSTFIELDS      => 'posted_data='.$complete_array_message,
+            CURLOPT_HTTPHEADER      => [
                 'Authorization: Basic ' . base64_encode($auth_username.":".$auth_password),
                 'Cache-Control: no-cache'
             ]
