@@ -31,7 +31,6 @@ if (isset($_GET['p']) AND isset($_GET['m'])) {
         $remote_user_password = ''; 
 
 
-        
 
 
         /*Info given by MIPS - Do not Change*/
@@ -51,32 +50,39 @@ if (isset($_GET['p']) AND isset($_GET['m'])) {
 
         $order_id = nettoyage($_GET['r']);
 
+        
+        $URL_REDIRECTION ='www.mypuffbabi.com'; // Votre URL de redirection DYNAMIQUE ICI';  
+
         $currency='XOF';                        //currency
 
         //load iframe html
         $complete_array_message = [
-            'id_merchant' => $id_merchant,
-            'id_entity' => $id_entity,
-            'operator_email' => '',
-            'operator_id' => $operator_id,
-            'remote_user_password' => $remote_user_password,
-            'message' =>[
-                'operation' => 'load_iframe',
-                'order_id' => $order_id, //your order id
-                'amount' => $montantPaye,  // value in cents
-                'currency' => $currency,
-                'width' => '100%',
-                'height' => '600',
-            ]
-        ];
+				"authentify"=>[
+					"id_merchant" 		=> $id_merchant,
+					"id_entity" 		=> $id_entity,
+					"id_operator" 		=> $operator_id,
+					"operator_password" => $remote_user_password
+				],
+				"order"=>[
+					"id_order" => $order_id,
+					"currency" => $currency,
+					"amount"   => $montantTotal
+				],
+				"iframe_behavior"=>[
+					"height" => 600,
+					"width" => 350,
+					"custom_redirection_url"   => $URL_REDIRECTION,
+					"language" => "FR"
+				],
+				"request_mode"=> "simple",
+				"touchpoint"=> "web",
+		];
+
+        $complete_message_json = json_encode($complete_array_message);
 
 
-
-        $complete_array_message = json_encode($complete_array_message);
-
-
-        $api_url = 'https://api.mips.mu/qp_api/qp_api.php';
-
+        //$api_url = 'https://api.mips.mu/qp_api/qp_api.php';
+        $api_url = 'https://api.mips.mu/api/load_payment_zone';
 
         $curl = curl_init();
         $curl_opt = [
@@ -89,7 +95,7 @@ if (isset($_GET['p']) AND isset($_GET['m'])) {
             CURLOPT_VERBOSE         => 1,
             CURLOPT_SSL_VERIFYPEER  => false,
             CURLOPT_POST            => true,
-            CURLOPT_POSTFIELDS      => 'posted_data='.$complete_array_message,
+            CURLOPT_POSTFIELDS      => $complete_message_json,
             CURLOPT_HTTPHEADER      => [
                 'Authorization: Basic ' . base64_encode($auth_username.":".$auth_password),
                 'Cache-Control: no-cache'
@@ -102,7 +108,7 @@ if (isset($_GET['p']) AND isset($_GET['m'])) {
 
         $response_decoded = json_decode($response,true);
 
-        return $response_decoded['answer']['payment_iframe'];
+        return $response_decoded['answer']['payment_zone_data'];
 
     }
 
